@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Content Title | PHP Motors</title>
+    <title>Home | PHP Motors</title>
     <link href="/phpmotors/css/stylehome.css" type="text/css" rel="stylesheet" media="screen">
 </head>
 
