@@ -44,7 +44,7 @@ main {
   padding-left: .25rem;
 }
 
-#page_nav ul {
+nav ul {
   list-style-type: none;
   margin: 0;
   padding: 1em;
@@ -54,18 +54,18 @@ main {
   gap: 1em;
 }
 
-#page_nav li {
+nav li {
   display: inline;
 
 }
 
-#page_nav a {
+nav a {
   color: #ffff;
   text-decoration: none;
 
 }
 
-#page_nav a:hover {
+nav a:hover {
   background-color: #4c96d7;
   color: #3a3a3a;
   padding: 1.2em;

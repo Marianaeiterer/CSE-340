@@ -4,9 +4,9 @@
 
 function phpmotorsConnect(){
  $server = 'localhost';
- $dbname= 'phpmotors.';
+ $dbname= 'phpmotors'; //I added the period so the connection fails and the error page appears like asked in the instructions
  $username = 'iClient';
- $password = '3OBfrF@[8m[/26jG'; 
+ $password = '3OBfrF@[8m[/26jG'; //password generated
  $dsn = "mysql:host=$server;dbname=$dbname";
  $options = array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION);
 
@@ -23,6 +23,6 @@ function phpmotorsConnect(){
  }
 }
 
-phpmotorsConnect();
+//phpmotorsConnect();
 
 ?>
