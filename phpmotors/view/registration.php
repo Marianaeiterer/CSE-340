@@ -21,29 +21,38 @@
         <main>
             <h1>Register</h1>
             <p>All fields are required</p>
-            <form id="registration" method="POST" action="submit">
+
+            <?php
+            if (isset($message)) {
+                echo $message;
+            }
+            ?>
+
+            <form method="post" action="/phpmotors/accounts/index.php">
                 <ul>
                     <li>
                         <label for="clientFirstname">First Name</label>
-                        <input name="clientFirstname" id="clientFirstname" type="text" required>
+                        <input type="text" name="clientFirstname" id="clientFirstname">
                     </li>
                     <li>
                         <label for="clientLastname">Last Name</label>
-                        <input name="clientLastname" id="clientLastname" type="text" required>
+                        <input type="text" name="clientLastname" id="clientLastname">
                     </li>
                     <li>
                         <label for="clientEmail">Email</label>
-                        <input name="clientEmail" id="clientEmail" type="email" required>
+                        <input type="email" name="clientEmail" id="clientEmail">
                     </li>
                     <li>
-                        
+
                         <label for="clientPassword">Password</label>
                         <p>Passwords must be at least 8 characteres and contain at least 1 number, 1 capital letter, and 1 special character</p>
-                        <input name="clientPassword" id="clientPassword" type="password" required>
+                        <input type="password" name="clientPassword" id="clientPassword">
                         <button class="show-password">Show Password</button>
                     </li>
                     <li>
-                        <button name="registrationButton" id="registratioButton">Register</button>
+                        <input type="submit" name="submit" id="regbtn" class="btn" value="Register">
+                        <!-- Add the action name - value pair -->
+                        <input type="hidden" name="action" value="register">
                     </li>
                 </ul>
             </form>

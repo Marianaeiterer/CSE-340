@@ -175,23 +175,47 @@ form label {
   max-width: 100%;
   font-size: 1.3em;
 }
-form input{
-    display: block;
-    max-width: 50%;
-    box-sizing: border-box;
-    border: 3px solid #b1abab;
-    margin-top: 1em;
-    width: 70%;
-    letter-spacing: 0.1em;
-    padding: 0.9em 1.3em;
+
+form input {
+  display: block;
+  box-sizing: border-box;
+  border: 3px solid #b1abab;
+  margin-top: 1em;
+  width: 60%;
+  letter-spacing: 0.1em;
+  padding: 0.9em 1.3em;
 }
 
 form input[type=text]:focus {
   border: 3px solid #3a3a3a;
 }
 
-form button{
-  background-color:#4c96d7;
+form textarea {
+  display: block;
+  box-sizing: border-box;
+  border: 3px solid #b1abab;
+  margin-top: 1em;
+  width: 60%;
+  letter-spacing: 0.1em;
+  padding: 0.9em 1.3em;
+}
+
+form textarea:focus {
+  border: 3px solid #3a3a3a;
+}
+
+form select {
+  display: block;
+  width: 60%;
+  box-sizing: border-box;
+  border: 3px solid #b1abab;
+  margin-top: 1em;
+  letter-spacing: 0.1em;
+  padding: 0.9em 1.3em;
+}
+
+.btn {
+  background-color: #4c96d7;
   border: none;
   color: black;
   padding: 0.8em 1.3em;
@@ -199,11 +223,25 @@ form button{
   text-decoration: none;
   font-size: 1.3em;
   cursor: pointer;
-  max-width: 50%;
+  width: 60%;
 }
 
-.show-password{
-  background-color:#3a3a3a;
+#classificationName{
+  width: 70%;
+}
+.btnclass{
+  background-color: #4c96d7;
+  border: none;
+  color: black;
+  padding: 0.8em 1.3em;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.3em;
+  cursor: pointer;
+  width: 70%;
+}
+.show-password {
+  background-color: #3a3a3a;
   border: none;
   color: white;
   padding: 0.5em 1em;
@@ -215,12 +253,12 @@ form button{
   margin-top: 0.2em;
 }
 
-.notMember{
+.notMember {
   display: block;
   font-size: 1.2em;
   padding: 2em;
   color: #3a3a3a;
-  
+
 }
 
 

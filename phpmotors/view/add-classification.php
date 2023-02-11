@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Login | PHP Motors</title>
+    <title>Add Classification | PHP Motors</title>
     <link href="/phpmotors/css/style.css" type="text/css" rel="stylesheet" media="screen">
 </head>
 
@@ -19,29 +19,26 @@
             <?php echo $navList; ?>
         </nav>
         <main>
-            <h1>Sign In</h1>
+            <h1>Add Car Classification</h1>
             <?php
             if (isset($message)) {
                 echo $message;
             }
             ?>
-            <form id="login" method="POST">
+            <form method='post' action="/phpmotors/vehicles/index.php">
                 <ul>
                     <li>
-                        <label for="clientEmail">Email</label>
-                        <input name="clientEmail" id="clientEmail" type="email" required>
+                        <label for="classificationName">Classification Name</label>
+                        <input type="text" name="classificationName" id="classificationName">
                     </li>
+
                     <li>
-                        <label for="clientPassword">Password</label>
-                        <input name="clientPassword" id="clientPassword" type="password" required>
-                    </li>
-                    <li>
-                        <button type="submit" id="logbtn" class="btn">Sign-In</button>
+                        <input type="submit" name="submit" id="classbtn" class="btnclass" value="Add Classification">
+                        <!-- Add the action name - value pair -->
+                        <input type="hidden" name="action" value="addClass">
                     </li>
                 </ul>
             </form>
-
-            <a href="/phpmotors/accounts/?action=registration" class="notMember">Not a member yet? Sign-Up</a>
         </main>
         <hr>
         <footer>
