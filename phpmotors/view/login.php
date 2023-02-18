@@ -29,14 +29,17 @@
                 <ul>
                     <li>
                         <label for="clientEmail">Email</label>
-                        <input name="clientEmail" id="clientEmail" type="email" required>
+                        <input type="email" name="clientEmail" id="clientEmail" <?php if (isset($clientEmail)) {echo "value='$clientEmail'";} ?> required>
                     </li>
                     <li>
                         <label for="clientPassword">Password</label>
-                        <input name="clientPassword" id="clientPassword" type="password" required>
+                        <span>Passwords must be at least 8 characters and contain at least 1 number, 1 capital letter and 1 special character</span>
+                        <input type="password" name="clientPassword" id="clientPassword" pattern="(?=^.{8,}$)(?=.*\d)(?=.*\W+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required>
                     </li>
                     <li>
-                        <button type="submit" id="logbtn" class="btn">Sign-In</button>
+                        <input type="submit" name="submit" id="regbtn" class="btn" value="Login">
+                        <!-- Add the action name - value pair -->
+                        <input type="hidden" name="action" value="Login">
                     </li>
                 </ul>
             </form>

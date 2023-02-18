@@ -29,7 +29,8 @@
                 <ul>
                     <li>
                         <label for="classificationName">Classification Name</label>
-                        <input type="text" name="classificationName" id="classificationName">
+                        <span>The maximum length of the classification name is 30 characters</span>
+                        <input type="text" name="classificationName" id="classificationName" maxlength="30" required>
                     </li>
 
                     <li>
