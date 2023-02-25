@@ -2,6 +2,9 @@
 
 //This is the accounts Controller
 
+// Create or access a Session
+session_start();
+
 // Get the database connection file
 require_once '../library/connections.php';
 // Get the PHP Motors model for use as needed
@@ -17,7 +20,7 @@ $classifications = getClassifications();
 //var_dump is a PHP function that displays information about a variable, array or object
 //var_dump($classifications); 
 //The exit directive stops all further processing by PHP.
-	//exit; 
+//exit; 
 
 // Build a navigation bar using the $classifications array
 $navList = buildNavigation($classifications);
@@ -26,11 +29,11 @@ $navList = buildNavigation($classifications);
 //exit;
 
 $action = filter_input(INPUT_POST, 'action');
- if ($action == NULL){
-  $action = filter_input(INPUT_GET, 'action');
+if ($action == NULL) {
+   $action = filter_input(INPUT_GET, 'action');
 }
 
-switch ($action){
+switch ($action) {
    case 'login':
       include '../view/login.php';
       break;
@@ -46,11 +49,20 @@ switch ($action){
       $clientEmail = checkEmail($clientEmail);
       $checkPassword = checkPassword($clientPassword);
 
+      $existingEmail = checkExistingEmail($clientEmail); //number 1 is TRUE and 0 FALSE
+
+      // Check for existing email address in the table
+      if ($existingEmail) {
+         $message = '<p class="notice">That email address already exists. Do you want to login instead?</p>';
+         include '../view/login.php';
+         exit;
+      }
+
       // Check for missing data
-      if(empty($clientFirstname) || empty($clientLastname) || empty($clientEmail) || empty($checkPassword)){
+      if (empty($clientFirstname) || empty($clientLastname) || empty($clientEmail) || empty($checkPassword)) {
          $message = '<p>Please provide information for all empty form fields.</p>';
          include '../view/registration.php';
-         exit; 
+         exit;
       }
 
       // Hash the checked password
@@ -58,18 +70,20 @@ switch ($action){
 
       // Send the data to the model
       $regOutcome = regClient($clientFirstname, $clientLastname, $clientEmail, $hashedPassword);
-      
+
       // Check and report the result
-      if($regOutcome === 1){
-         $message = "<p>Thanks for registering $clientFirstname. Please use your email and password to login.</p>";
-         include '../view/login.php';
+      if ($regOutcome === 1) {
+         //The fourth parameter is the path and being "/" means the cookie will be visible to the entire web site.
+         setcookie('firstname', $clientFirstname, strtotime('+1 year'), '/');
+         $_SESSION['message'] = "Thanks for registering $clientFirstname. Please use your email and password to login.";
+         header('Location: /phpmotors/accounts/?action=login');
          exit;
       } else {
          $message = "<p>Sorry $clientFirstname, but the registration failed. Please try again.</p>";
          include '../view/registration.php';
          exit;
       }
-      
+
       break;
 
    case 'Login':
@@ -78,18 +92,47 @@ switch ($action){
       $clientEmail = checkEmail($clientEmail);
       $checkPassword = checkPassword($clientPassword);
 
-       // Check for missing data
-       if(empty($clientEmail) || empty($checkPassword)){
-         $message = '<p>Please provide the correct information for all empty form fields.</p>';
+      // Check for missing data
+      if (empty($clientEmail) || empty($checkPassword)) {
+         $message = '<p class="notice">Please provide a valid email address and password.</p>';
          include '../view/login.php';
-         exit; 
+         exit;
       }
 
-      echo "Login";
+      // A valid password exists, proceed with the login process
+      // Query the client data based on the email address
+      $clientData = getClient($clientEmail);
+      // Compare the password just submitted against
+      // the hashed password for the matching client
+      $hashCheck = password_verify($clientPassword, $clientData['clientPassword']);
+      // If the hashes don't match create an error
+      // and return to the login view
+      if (!$hashCheck) {
+         $message = '<p class="notice">Please check your password and try again.</p>';
+         include '../view/login.php';
+         exit;
+      }
+      // A valid user exists, log them in
+      $_SESSION['loggedin'] = TRUE;
+      // Remove the password from the array
+      // the array_pop function removes the last
+      // element from an array
+      array_pop($clientData);
+      // Store the array into the session
+      $_SESSION['clientData'] = $clientData;
+      // Send them to the admin view
+      include '../view/admin.php';
       exit;
       break;
+   case 'Logout':
+
+      unset($_SESSION['loggedIn']);
+      unset($_SESSION['clientData']);
+      session_destroy();
+      header("Location: http://localhost/phpmotors/index.php");
+      break;
    default:
-   //The default statement in the accounts controller should remain empty for now.
+      include '../view/admin.php';
 
 }
 

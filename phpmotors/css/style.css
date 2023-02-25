@@ -39,7 +39,14 @@ body {
   text-decoration: none;
   align-self: center;
 }
-
+#top-header div{
+  align-self: center;
+}
+span{
+  display: block;
+  font-size: 1.2em;
+  margin-top: 1em;
+}
 main {
   padding-left: .25rem;
 }
