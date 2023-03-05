@@ -126,14 +126,99 @@ switch ($action) {
       break;
    case 'Logout':
 
-      unset($_SESSION['loggedIn']);
+      unset($_SESSION['loggedin']);
       unset($_SESSION['clientData']);
       session_destroy();
       header("Location: http://localhost/phpmotors/index.php");
       break;
+
+   case 'updateAccount':
+        $clientId = filter_input(INPUT_GET, 'clientId', FILTER_VALIDATE_INT); // It is GET because it comes from a link 
+      include '../view/client-update.php';
+      exit;
+
+      break;
+   case 'updateInfo':
+      // Filter and store the data
+      $clientFirstname = trim(filter_input(INPUT_POST, 'clientFirstname', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+      $clientLastname = trim(filter_input(INPUT_POST, 'clientLastname', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+      $clientEmail = trim(filter_input(INPUT_POST, 'clientEmail', FILTER_SANITIZE_EMAIL));
+      $clientEmail = checkEmail($clientEmail);
+      $clientId = filter_input(INPUT_POST, 'clientId', FILTER_SANITIZE_NUMBER_INT);
+
+      // Check for missing data
+      if (empty($clientFirstname) || empty($clientLastname) || empty($clientEmail)) {
+         $message = '<p>Please provide information for all empty form fields.</p>';
+         include '../view/client-update.php';
+         exit;
+      }
+
+      if ($clientEmail != $_SESSION['clientData']['clientEmail']) {
+         $existingEmail = checkExistingEmail($clientEmail); //number 1 is TRUE and 0 FALSE
+         // Check for existing email address in the table
+         if ($existingEmail) {
+            $message = '<p class="notice">This email address already exists</p>';
+            include '../view/client-update.php';
+            exit;
+         }
+      }
+
+
+      // Send the data to the model
+      $updateResult = updateInfo($clientFirstname, $clientLastname, $clientEmail, $clientId);
+
+      // Check and report the result
+      if ($updateResult) {
+         //The fourth parameter is the path and being "/" means the cookie will be visible to the entire web site.
+         $clientData = getClientId($clientId);
+         array_pop($clientData);
+         $_SESSION['clientData'] = $clientData;
+         $message = "<p class='notice'>Congratulations, your information was successfully updated.</p>";
+         $_SESSION['message'] = $message;
+         header('location: /phpmotors/accounts/');
+         exit;
+      } else {
+         $message = "<p class='notice'>Error! Information was not updated.</p>";
+         include '../view/client-update.php';
+         exit;
+      }
+      break;
+
+   case 'updatePassword':
+      $clientPassword = trim(filter_input(INPUT_POST, 'clientPassword', FILTER_SANITIZE_FULL_SPECIAL_CHARS));
+      $clientId = filter_input(INPUT_POST, 'clientId', FILTER_SANITIZE_NUMBER_INT);
+      $checkPassword = checkPassword($clientPassword, $clientId);
+
+
+      // Check for missing data
+      if (empty($checkPassword)) {
+         $message = '<p>Please provide the right information for all empty form fields.</p>';
+         include '../view/client-update.php';
+         exit;
+      }
+
+      $hashedPassword = password_hash($clientPassword, PASSWORD_DEFAULT);
+
+      // Send the data to the model
+      $updateResult = updatePassword($hashedPassword, $clientId);
+
+      // Check and report the result
+      if ($updateResult) {
+         //The fourth parameter is the path and being "/" means the cookie will be visible to the entire web site.
+         $clientData = getClientId($clientId);
+         array_pop($clientData);
+         $_SESSION['clientData'] = $clientData;
+         $message = "<p class='notice'>Congratulations, your password was successfully updated.</p>";
+         $_SESSION['message'] = $message;
+         header('location: /phpmotors/accounts/');
+         exit;
+      } else {
+         $message = "<p class='notice'>Error! Password was not updated.</p>";
+         include '../view/client-update.php';
+         exit;
+      }
+
+      break;
    default:
       include '../view/admin.php';
-
 }
-
-?>

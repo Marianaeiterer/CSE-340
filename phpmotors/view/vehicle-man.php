@@ -1,13 +1,16 @@
 <?php
 
-if(isset($_SESSION['loggedin']) and $_SESSION['clientData']['clientLevel'] > 1){
-   
-}else {
-    header("Location: http://localhost/phpmotors/index.php");
-    exit;
-}
+    if (!isset($_SESSION['loggedin']) || !$_SESSION['loggedin'] || $_SESSION['clientData']['clientLevel'] < 2) {
 
-?><!DOCTYPE html>
+        header('location: /phpmotors/');
+    }
+
+    if (isset($_SESSION['message'])) {
+        $message = $_SESSION['message'];
+    }
+
+?>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -33,12 +36,32 @@ if(isset($_SESSION['loggedin']) and $_SESSION['clientData']['clientLevel'] > 1){
                 <li><a href="/phpmotors/vehicles/?action=add-classification">Add Classification</a></li>
                 <li><a href="/phpmotors/vehicles/?action=add-vehicle">Add Vehicle</a></li>
             </ul>
+
+            <?php
+            if (isset($message)) {
+                echo $message;
+            }
+            if (isset($classificationList)) {
+                echo '<h2>Vehicles By Classification</h2>';
+                echo '<p>Choose a classification to see those vehicles</p>';
+                echo $classificationList;
+            }
+            ?>
+            <!-- This tag informs the user that javascript is needed if javascript is disable -->
+            <noscript>
+                <p><strong>JavaScript Must Be Enabled to Use this Page.</strong></p>
+            </noscript>
+
+            <table id="inventoryDisplay"></table>
+
         </main>
         <hr>
         <footer>
             <?php include $_SERVER['DOCUMENT_ROOT'] . "/phpmotors/common/footer.php" ?>
         </footer>
     </div>
+    <script src="../js/inventory.js"></script>
 </body>
 
 </html>
+<?php unset($_SESSION['message']); ?>

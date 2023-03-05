@@ -43,7 +43,7 @@
                         <input type="email" name="clientEmail" id="clientEmail" placeholder="Enter a valid email address" <?php if(isset($clientEmail)){echo "value='$clientEmail'";} ?> required>
                     </li>
                     <li>
-                        <label for="clientPassword">Password:</label>
+                        <label for="clientPassword">Password</label>
                         <span>Passwords must be at least 8 characters and contain at least 1 number, 1 capital letter and 1 special character</span>
                         <input type="password" name="clientPassword" id="clientPassword" pattern="(?=^.{8,}$)(?=.*\d)(?=.*\W+)(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$" required>
                         <button class="show-password">Show Password</button>

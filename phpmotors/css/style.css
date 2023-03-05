@@ -211,7 +211,7 @@ form textarea:focus {
   border: 3px solid #3a3a3a;
 }
 
-form select {
+select {
   display: block;
   width: 60%;
   box-sizing: border-box;
@@ -228,7 +228,7 @@ form select {
   padding: 0.8em 1.3em;
   text-align: center;
   text-decoration: none;
-  font-size: 1.3em;
+  font-size: 1.1em;
   cursor: pointer;
   width: 60%;
 }
@@ -266,6 +266,15 @@ form select {
   padding: 2em;
   color: #3a3a3a;
 
+}
+
+table th{
+  font-size: 1.2em;
+  padding: 1em;
+}
+
+table td{
+  padding: 1em;
 }
 
 @media only screen and (min-width: 768px) {
