@@ -132,8 +132,10 @@ switch ($action) {
         $invColor = filter_input(INPUT_POST, 'invColor', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $invId = filter_input(INPUT_POST, 'invId', FILTER_SANITIZE_NUMBER_INT);
 
-        if (empty($classificationId) || empty($invMake) || empty($invModel) || empty($invDescription) || empty($invImage) || empty($invThumbnail)
-            || empty($invPrice) || empty($invStock) || empty($invColor)) {
+        if (
+            empty($classificationId) || empty($invMake) || empty($invModel) || empty($invDescription) || empty($invImage) || empty($invThumbnail)
+            || empty($invPrice) || empty($invStock) || empty($invColor)
+        ) {
             $message = '<p>Please complete all information for the item! Double check the classification of the item.</p>';
             include '../view/vehicle-update.php';
             exit;
@@ -184,6 +186,33 @@ switch ($action) {
         }
         break;
 
+    case 'classification':
+
+        $classificationName = filter_input(INPUT_GET, 'classificationName', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $vehicles = getVehiclesByClassification($classificationName);
+        if (!count($vehicles)) {
+            $message = "<p class='notice'>Sorry, no $classificationName could be found.</p>";
+        } else {
+            $vehicleDisplay = buildVehiclesDisplay($vehicles);
+        }
+
+        include '../view/classification.php';
+        break;
+
+    case 'vehicleInfo':
+        $vehicleId = filter_input(INPUT_GET, 'vehicleId', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+
+        $vehicleDetails = getVehiclesById($vehicleId);
+
+        if (!$vehicleDetails) {
+            $message = "<p class='notice'>Sorry, no vehicle could be found.</p>";
+        } else {
+            $vehicleDisplay = buildVehicleInformationDisplay($vehicleDetails);
+        }
+
+        include '../view/vehicle-detail.php';
+
+        break;
     default:
         $classificationList = buildClassificationList($classifications);
 
@@ -192,5 +221,3 @@ switch ($action) {
         include '../view/vehicle-man.php';
         break;
 }
-
-?>

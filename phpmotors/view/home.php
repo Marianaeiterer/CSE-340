@@ -30,7 +30,7 @@
                     <p>Fuzzy dice!</p>
                 </div>
                 <div class="image">
-                    <img src="/phpmotors/images/delorean.jpg" alt=" Delorean car">
+                    <img src="/phpmotors/images/vehicles/delorean.jpg" alt=" Delorean car">
                 </div>
 
                 <div class="button">
