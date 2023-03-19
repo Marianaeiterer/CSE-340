@@ -132,7 +132,11 @@ function deleteVehicle($invId) {
 //get a list of vehicles based on the classification
 function getVehiclesByClassification($classificationName){
     $db = phpmotorsConnect();
-    $sql = 'SELECT * FROM inventory WHERE classificationId IN (SELECT classificationId FROM carclassification WHERE classificationName = :classificationName)';
+    $sql = 'SELECT i.invId, i.invMake, i.invModel, i.invPrice, i.invStock, i.invColor, img.imgPath AS invThumbnail
+    FROM inventory i
+    INNER JOIN images img ON img.invId = i.invId
+    WHERE img.imgPrimary = 1 AND img.imgName LIKE "%-tn%"
+    AND i.classificationId IN (SELECT classificationId FROM carclassification WHERE classificationName = :classificationName);';
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':classificationName', $classificationName, PDO::PARAM_STR);
     $stmt->execute();
@@ -144,7 +148,11 @@ function getVehiclesByClassification($classificationName){
 //get a list of vehicles based on the ID
 function getVehiclesById($invId){
     $db = phpmotorsConnect();
-    $sql = 'SELECT * FROM inventory WHERE invId = :invId';
+    $sql = 'SELECT inventory.invId, invMake, invModel, invDescription, invPrice, invStock, invColor, classificationId, images.imgPath AS invImage 
+    FROM inventory
+    INNER JOIN images
+    ON images.invId = inventory.invId
+    WHERE (images.imgName NOT LIKE "%-tn%") AND (inventory.invId = :invId) AND (images.imgPrimary = 1)';
     $stmt = $db->prepare($sql);
     $stmt->bindValue(':invId', $invId, PDO::PARAM_STR);
     $stmt->execute();
@@ -153,4 +161,14 @@ function getVehiclesById($invId){
     return $vehicleDetails;
 }
 
+// Get information for all vehicles
+function getVehicles(){
+	$db = phpmotorsConnect();
+	$sql = 'SELECT invId, invMake, invModel FROM inventory';
+	$stmt = $db->prepare($sql);
+	$stmt->execute();
+	$invInfo = $stmt->fetchAll(PDO::FETCH_ASSOC);
+	$stmt->closeCursor();
+	return $invInfo;
+}
 

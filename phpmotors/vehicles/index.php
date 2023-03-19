@@ -14,8 +14,12 @@ require_once '../model/main-model.php';
 // Get the accounts model
 require_once '../model/vehicles-model.php';
 
+// Get the uploads model
+require_once '../model/uploads-model.php';
+
 // Get the functions library
 require_once '../library/functions.php';
+
 
 // Get the array of classifications
 $classifications = getClassifications();
@@ -203,12 +207,14 @@ switch ($action) {
         $vehicleId = filter_input(INPUT_GET, 'vehicleId', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $vehicleDetails = getVehiclesById($vehicleId);
+        $vehicleThumbnails = allThumbnails($vehicleId);
 
-        if (!$vehicleDetails) {
+        if (!$vehicleDetails && !$vehicleThumbnails) {
             $message = "<p class='notice'>Sorry, no vehicle could be found.</p>";
         } else {
-            $vehicleDisplay = buildVehicleInformationDisplay($vehicleDetails);
+            $vehicleDisplay = buildVehicleInformationDisplay($vehicleDetails, $vehicleThumbnails);
         }
+
 
         include '../view/vehicle-detail.php';
 
